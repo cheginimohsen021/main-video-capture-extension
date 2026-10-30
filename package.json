@@ -1,0 +1,16 @@
+{
+  "name": "main-video-capture-extension",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "package:zip": "node scripts/package-release.mjs zip",
+    "package:crx": "node scripts/package-release.mjs crx",
+    "release": "node scripts/package-release.mjs all"
+  },
+  "devDependencies": {
+    "adm-zip": "^0.5.16",
+    "crx3": "^0.0.4"
+  }
+}

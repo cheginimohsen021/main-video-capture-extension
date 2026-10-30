@@ -1,0 +1,39 @@
+{
+  "name": "main-video-capture-extension",
+  "version": "1.0.0",
+  "description": "Source-first Chrome extension for capturing the main video on a page with explicit fallback controls.",
+  "manifest_version": 3,
+  "permissions": [
+    "activeTab",
+    "storage",
+    "scripting",
+    "downloads",
+    "tabCapture"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_title": "Main Video Capture",
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icon.svg"
+    }
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["icon.svg"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

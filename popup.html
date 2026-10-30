@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Main Video Capture</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="header">
+        <div class="brand">
+          <img src="icon.svg" alt="Main Video Capture" width="28" height="28" />
+          <span>Main Video Capture</span>
+        </div>
+      </header>
+
+      <main class="body">
+        <div class="status-card">
+          <div class="status-label">Current tab</div>
+          <div id="tab-name" class="tab-name">Inspecting…</div>
+          <div id="video-status" class="video-status">No main video detected yet.</div>
+        </div>
+
+        <div class="actions">
+          <button id="inspectBtn" class="primary">Inspect page</button>
+          <button id="captureBtn" class="secondary">Capture current tab</button>
+          <button id="fallbackBtn" class="ghost">Use fallback capture</button>
+        </div>
+
+        <div id="message" class="message" aria-live="polite"></div>
+      </main>
+    </div>
+
+    <script src="popup.js"></script>
+  </body>
+</html>

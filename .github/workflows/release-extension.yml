@@ -1,0 +1,64 @@
+name: Build and Release Chrome Extension
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*.*.*'
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build extension
+        run: npm run build
+
+      - name: Package ZIP release
+        run: npm run package:zip
+
+      - name: Generate CRX if signing key is provided
+        if: ${{ secrets.CRX_PRIVATE_KEY != '' }}
+        env:
+          CRX_PRIVATE_KEY: ${{ secrets.CRX_PRIVATE_KEY }}
+        run: |
+          mkdir -p release
+          printf '%s' "$CRX_PRIVATE_KEY" > release/key.pem
+          npx crx3 \
+            --content dist \
+            --key release/key.pem \
+            --output release/main-video-capture-extension.crx
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: extension-artifacts
+          path: |
+            release/*.zip
+            release/*.crx
+          if-no-files-found: error
+
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            release/*.zip
+            release/*.crx
+          draft: false
+          prerelease: false
